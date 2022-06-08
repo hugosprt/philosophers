@@ -65,6 +65,7 @@ int parse(char **av)
     }
     if (i == 5 || i == 6)
         return (1);
+    ft_error();
     return (0);
 }
 
