@@ -6,22 +6,29 @@
 # include <stdlib.h>
 # include <string.h>
 
-typedef struct s_data
+
+typedef struct s_philo
 {
-	int number_of_philosophers;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int number_of_times_each_philosopher_must_eat;
-    int number_of_fourchette;
-    //t_philo[number_of_philosophers];
-}       t_data;
+    int     id;
+    int     num_eat;
+    int is_alive;
+    int is_eating;
+    int is_sleep;
+}   t_philo;
 
-// typedef struct t_philo 
-// {
+typedef struct s_data 
+{
+    int num_philosophers;
+    int tdie;
+    int teat;
+    int tsleep;
+    int num_eat;
+    int num_fourchette;
+      t_philo *philo;
+}   t_data;
 
-// }   s_philo;
 void    put_struct(t_data *data, char **av);
 
+void    number_philo(t_data *data);
 
 #endif

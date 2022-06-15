@@ -1,13 +1,14 @@
-NAME = philosophers
+NAME = philo
 
 SRCS =	main.c \
 		parse.c\
+		init_philo.c \
 
 OBJS = ${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 RM = rm -rf
 

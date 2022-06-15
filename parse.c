@@ -21,7 +21,7 @@ long	int	ft_atol(const char *str)
 	nb = 0;
 	i = 0;
 	sign = 1;
-	while (str[i] && ((str[i] <= 13 && str[i] >= 9) || str[i] == ' '))
+	while (str[i] && (str[i] <= 13 && str[i] >= 9))
 	{
 		i++;
 	}
@@ -53,7 +53,7 @@ int parse(char **av)
         j = 0;
         while (av[i][j])
         {
-            if (!ft_isdigit2(av[i][j]) && av[i][j])
+            if ((!ft_isdigit2(av[i][j]) && av[i][j]) || (j > 10))
             {
                
                 ft_error();
@@ -76,11 +76,11 @@ void    put_struct(t_data *data, char **av)
         return ;
     else
     {
-       data->number_of_philosophers = ft_atol(av[1]);
-       data->time_to_die = ft_atol(av[2]);
-       data->time_to_eat = ft_atol(av[3]);
-       data->time_to_sleep = ft_atol(av[4]);
+       data->num_philosophers = ft_atol(av[1]);
+       data->tdie = ft_atol(av[2]);
+       data->teat = ft_atol(av[3]);
+       data->tsleep = ft_atol(av[4]);
        if (av[5])
-            data->number_of_times_each_philosopher_must_eat = ft_atol(av[5]);
+            data->num_eat = ft_atol(av[5]);
     }
 }
