@@ -70,10 +70,10 @@ int parse(char **av)
 }
 
 
-void    put_struct(t_data *data, char **av)
+int    put_struct(t_data *data, char **av)
 {
     if (!parse(av))
-        return ;
+        return (0);
     else
     {
        data->num_philosophers = ft_atol(av[1]);
@@ -83,4 +83,5 @@ void    put_struct(t_data *data, char **av)
        if (av[5])
             data->num_eat = ft_atol(av[5]);
     }
+    return (1);
 }

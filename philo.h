@@ -27,7 +27,7 @@ typedef struct s_data
       t_philo *philo;
 }   t_data;
 
-void    put_struct(t_data *data, char **av);
+int    put_struct(t_data *data, char **av);
 
 void    number_philo(t_data *data);
 
