@@ -9,7 +9,7 @@ void    number_philo(t_data *data)
     if (data->philo == NULL)
         return ;
     i = 0;  
-    while (i <= data->num_philosophers)
+    while (i <= 5)//data->num_philosophers)
     {
         data->philo[i].id = i;
         data->philo[i].num_eat = 0;

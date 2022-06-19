@@ -6,6 +6,7 @@ int main( int ac, char **av)
 
     data = malloc(sizeof(t_data));
     (void)(ac);
-    put_struct(data, av);
-    number_philo(data);
+    if (put_struct(data, av))
+        number_philo(data);
+    return (0);
 }
