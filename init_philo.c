@@ -9,7 +9,7 @@ void    number_philo(t_data *data)
     if (data->philo == NULL)
         return ;
     i = 0;  
-    while (i <= data->num_philosophers)
+    while (i <= data->num_philosophers + 1)
     {
         data->philo[i].id = i;
         data->philo[i].num_eat = 0;
@@ -17,7 +17,7 @@ void    number_philo(t_data *data)
         i++;
     }
     i = 0;  
-    while (i <= data->num_philosophers)
+    while (i <= data->num_philosophers + 1)
     {
         printf("philo %d :", data->philo[i].id);
         printf(" num eat %d,", data->philo[i].num_eat);  
