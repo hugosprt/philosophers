@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-
+# include <pthread.h>
 
 typedef struct s_philo
 {
@@ -14,6 +14,7 @@ typedef struct s_philo
     int is_alive;
     int is_eating;
     int is_sleep;
+    pthread_t   tid;
 }   t_philo;
 
 typedef struct s_data 
@@ -24,11 +25,11 @@ typedef struct s_data
     int tsleep;
     int num_eat;
     int num_fourchette;
-      t_philo *philo;
+    t_philo *philo;
 }   t_data;
 
 int    put_struct(t_data *data, char **av);
-
+void	finish(t_data *data);
 void    number_philo(t_data *data);
 
 #endif
