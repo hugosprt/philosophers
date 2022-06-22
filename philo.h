@@ -14,7 +14,8 @@ typedef struct s_philo
     int is_alive;
     int is_eating;
     int is_sleep;
-    pthread_t   tid;
+    pthread_mutex_t	*l_f;
+	pthread_mutex_t	*r_f;
 }   t_philo;
 
 typedef struct s_data 
@@ -25,7 +26,9 @@ typedef struct s_data
     int tsleep;
     int num_eat;
     int num_fourchette;
+    pthread_mutex_t	*forks;
     t_philo *philo;
+    pthread_t   *tid;
 }   t_data;
 
 int    put_struct(t_data *data, char **av);

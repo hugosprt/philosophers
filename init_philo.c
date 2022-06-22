@@ -19,33 +19,36 @@ void	finish(t_data *data)
 void    *ft_routine(void * arg)
 {
     (void) arg;
-    data->philo.is_alive = 0;
+   // data->philo.is_alive = 0;
    return (NULL);
 }
 
 void    number_philo(t_data *data)
 {
     int i;
-   
+    t_philo *philosofe;
 
-    data->philo = malloc(sizeof(t_philo) * (data->num_philosophers));
-    if (data->philo == NULL)
+    philosofe = malloc(sizeof(t_philo) * (data->num_philosophers));
+    if (philosofe == NULL)
         return ;
     i = 0;  
     while (i < data->num_philosophers)
     {
-        pthread_create(&(data->philo[i].tid) , NULL, &ft_routine, NULL);
-        data->philo[i].id = i + 1;
-        data->philo[i].num_eat = data->num_eat;
-        data->philo[i].is_alive = 1;
+        pthread_create(&(data->tid) , NULL, &ft_routine, NULL);
+        philosofe[i].id = i + 1;
+        philosofe[i].num_eat = data->num_eat;
+        philosofe[i].is_alive = 1;
+        philosofe[i].l_f = &data->forks[philosofe[i].id];
+        philosofe[i].r_f = &data->forks[(philosofe[i].id + 1) % data->num_philosophers];
         i++;
     }
+    philosofe = data->philo;
     i = 0; 
     while (i < data->num_philosophers)
     {
-        printf("philo %d :", data->philo[i].id);
-        printf(" num eat %d,", data->philo[i].num_eat);  
-        printf(" is alive %d. ", data->philo[i].is_alive);
+        printf("philo %d :", philosofe[i].id);
+        printf(" num eat %d,", philosofe[i].num_eat);  
+        printf(" is alive %d. ", philosofe[i].is_alive);
         printf("\n");
         i++;
     }
