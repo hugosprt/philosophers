@@ -9,6 +9,7 @@ OBJS = ${SRCS:.c=.o}
 CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -pthread
+#CFLAGS += -fsanitize=address -g3
 
 RM = rm -rf
 

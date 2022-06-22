@@ -10,12 +10,12 @@
 typedef struct s_philo
 {
     int     id;
-    int     num_eat;
+    int     eat;
     int is_alive;
     int is_eating;
     int is_sleep;
-    pthread_mutex_t	*l_f;
-	pthread_mutex_t	*r_f;
+    
+    struct s_data  *data;
 }   t_philo;
 
 typedef struct s_data 
@@ -26,8 +26,8 @@ typedef struct s_data
     int tsleep;
     int num_eat;
     int num_fourchette;
-    pthread_mutex_t	*forks;
     t_philo *philo;
+    pthread_mutex_t	*miammiam;
     pthread_t   *tid;
 }   t_data;
 
