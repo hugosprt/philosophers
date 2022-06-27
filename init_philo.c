@@ -18,21 +18,41 @@ void	finish(t_data *data)
 
 void * routine(void *arg) 
 {   
-    int i;
+
     t_philo *filo;
 
     filo = (t_philo *) arg;
 
-    i = 0;
-	// Vérouillage du mutex
-	pthread_mutex_lock(&(filo->data->miammiam[filo->id - 1]));
-	filo->eat++;
-	// Dévérouillage du mutex
-	pthread_mutex_unlock(&(filo->data->miammiam[filo->id - 1]));
-	printf("thread [%d ] data [ %i ]\n",filo->id,filo->eat);
-	// Pause l'exécution du thread pendant 1 seconde
-    i++;
-	usleep(1);
+    
+	//Vérouillage du mutex
+	if (filo->id % 2 == 0)
+	{
+		usleep(filo->data->tsleep);
+	}
+	while (1 && filo->eat < filo->data->num_eat)
+	{
+		if (filo->id < filo->data->num_philosophers)
+		{
+			pthread_mutex_lock(&(filo->data->miammiam[filo->id - 1]));
+			pthread_mutex_lock(&(filo->data->miammiam[filo->id]));
+			filo->eat++;
+			printf("philo [%d ] a mange [ %i ] fois \n",filo->id,filo->eat);
+			usleep(filo->data->teat);
+			pthread_mutex_unlock(&(filo->data->miammiam[filo->id]));
+			pthread_mutex_unlock(&(filo->data->miammiam[filo->id - 1]));
+		}
+		else
+		{
+			pthread_mutex_lock(&(filo->data->miammiam[filo->id - 1]));
+			pthread_mutex_lock(&(filo->data->miammiam[0]));
+			filo->eat++;
+			printf("philo [%d ] a mange [ %i ] fois \n",filo->id,filo->eat);
+			usleep(filo->data->teat);
+			pthread_mutex_unlock(&(filo->data->miammiam[0]));
+			pthread_mutex_unlock(&(filo->data->miammiam[filo->id -1]));
+			
+		}
+	}
 	pthread_exit(NULL);
 }
 
