@@ -16,42 +16,6 @@ void	finish(t_data *data)
 	free(data);
 }
 
-void    *ft_routine(void * arg)
-{
-    (void) arg;
-   // data->philo.is_alive = 0;
-   return (NULL);
-}
-
-// void    number_philo1(t_data *data)
-// {
-//     int i;
-
-
-//     data->philo = malloc(sizeof(t_philo) * (data->num_philosophers));
-//     if (data->philo == NULL)
-//         return ;
-//     i = 0;  
-//     while (i < data->num_philosophers)
-//     {
-//         data->philo[i].id = i + 1;
-//         data->philo[i].num_eat = data->num_eat;
-//         data->philo[i].is_alive = 1;
-// //        data->philo[i].miammiam = 
-//         i++;
-//     }
-    
-//     i = 0; 
-//     while (i < data->num_philosophers)
-//     {
-//         printf("philo %d :", data->philo[i].id);
-//         printf(" num eat %d,", data->philo[i].num_eat);  
-//         printf(" is alive %d. ", data->philo[i].is_alive);
-//         printf("\n");
-//         i++;
-//     }
-// }
-
 void * routine(void *arg) 
 {   
     int i;
@@ -77,11 +41,12 @@ void    init_philo(t_data *data)
     int i;
 
     i= 0;
-    data->philo = malloc(sizeof(t_philo) * (data->num_philosophers));    
+    data->philo = malloc(sizeof(t_philo) * (data->num_philosophers));
     data->tid = malloc(sizeof(pthread_t) * data->num_philosophers);
     data->miammiam = malloc(sizeof(pthread_mutex_t) * data->num_philosophers);
     while   (i < data->num_philosophers)
     {
+        data->philo[i].num_eat = data->num_eat;
         memset(&data->philo[i], 0, sizeof(t_philo));
         memset(&data->tid[i], 0, sizeof(pthread_t));
         memset(&data->miammiam[i], 0, sizeof(pthread_mutex_t));
@@ -94,6 +59,7 @@ void    init_philo(t_data *data)
 void number_philo(t_data *data) 
 {
     int i;
+    int err;
 
     i = 0;
     init_philo(data);
@@ -101,12 +67,12 @@ void number_philo(t_data *data)
     {
         data->philo[i].eat = 0;
 		// Création du thread et passage de la structure par référence
-		int err = pthread_create(&data->tid[i], NULL, routine, (void*)&data->philo[i]);
+		err = pthread_create(&data->tid[i], NULL, routine, (void*)&data->philo[i]);
 		if (err != 0) {
 			printf("Echec de la création du thread: [%s]", strerror(err));
 			break;
 		}
-		printf("Création du thread numéro %ld\n", data->tid[i]);
+		printf("Création du thread numéro %d\n", (int)data->tid[i]);
         i++;
 	}
 	// En attente des threads

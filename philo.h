@@ -14,7 +14,7 @@ typedef struct s_philo
     int is_alive;
     int is_eating;
     int is_sleep;
-    
+    int num_eat;
     struct s_data  *data;
 }   t_philo;
 
