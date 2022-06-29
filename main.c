@@ -11,16 +11,3 @@ int main( int ac, char **av)
     finish(data);
     return (0);
 }
-
-/*
-
-
-    s = malloc(2048);
-    memset(&s, 0, sizeof(t_data));
-
-    print(s);
-    {
-        2047 -> 0
-    }
-
-*/

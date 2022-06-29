@@ -31,7 +31,7 @@ void * routine(void *arg)
 
     filo = (t_philo *) arg;
 	filo->last_eat = get_time();
-	if (filo->id % 2 == 1)
+	if (filo->id % 2 == 0)
 	{
 		philo_think(filo);
 		usleep(filo->data->teat * 0.25 * 1000);
@@ -74,6 +74,7 @@ void    init_philo(t_data *data)
 		data->philo[i].last_eat = 0;
         data->philo[i].l_fork = i;
         data->philo[i].r_fork = (i + 1) % data->num_philosophers;
+		pthread_mutex_init(&data->miammiam[i], NULL);
         i++;
     }
 }

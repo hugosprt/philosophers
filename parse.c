@@ -55,7 +55,6 @@ int parse(char **av)
         {
             if ((!ft_isdigit2(av[i][j]) && av[i][j]) || (j > 10))
             {
-               
                 ft_error();
                 return (0);
             }
