@@ -82,6 +82,9 @@ int    put_struct(t_data *data, char **av)
        data->tsleep = ft_atol(av[4]);
        if (av[5])
             data->num_eat = ft_atol(av[5]);
+        else 
+            data->num_eat = -1;
     }
     return (1);
 }
+
