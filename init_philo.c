@@ -25,7 +25,7 @@ uint64_t	get_time(void)
 }
 
 void * routine(void *arg) 
-{   
+{
 
     t_philo *filo;
 
