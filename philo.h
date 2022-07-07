@@ -7,7 +7,7 @@
 # include <string.h>
 # include <pthread.h>
 # include <sys/time.h>
-
+# include <stdint.h>
 
 
 typedef enum e_tfk
@@ -27,10 +27,8 @@ typedef struct s_philo
 	int		r_fork;
     int     eat;
     int     is_finish;
-    int is_alive;
-    int is_eating;
-    int is_sleep;
     int num_eat;
+    pthread_mutex_t eating;
     uint64_t		last_eat;
     struct s_data  *data;
 }   t_philo;
@@ -38,13 +36,14 @@ typedef struct s_philo
 typedef struct s_data 
 {
     int num_philosophers;
+    pthread_mutex_t death;
     int no_one_died;
     int tdie;
     int teat;
     int tsleep;
     int num_eat;
-    int as_finish;
-    int num_fourchette;
+    pthread_mutex_t finish;
+    int as_finish; 
     t_philo *philo;
     pthread_mutex_t	*miammiam;
     pthread_t   *tid;

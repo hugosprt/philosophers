@@ -18,7 +18,9 @@ void	philo_eat(t_philo *philo, uint64_t timestamp)
 {
 	print_tfk(philo, EATING, timestamp);
 	philo->eat++;
+	pthread_mutex_lock(&philo->eating);
 	philo->last_eat = timestamp;
+	pthread_mutex_unlock(&philo->eating);
 	usleep(philo->data->teat * 1000);
 }
 
@@ -37,6 +39,11 @@ void	print_tfk(t_philo *philo, t_tfk tfk, uint64_t timestamp)
 {
 	const char	*states[6] = {"is thinking", "is eating", "is sleeping",
 		"has taken a fork", "died", NULL};
-
-	printf("%llu %d %s\n", timestamp, philo->id, states[tfk]);
+	pthread_mutex_lock(&philo->data->death);
+	if (philo->data->no_one_died)
+	{
+		printf("%lu %d %s\n", timestamp, philo->id, states[tfk]);
+		
+	}
+	pthread_mutex_unlock(&philo->data->death);
 }

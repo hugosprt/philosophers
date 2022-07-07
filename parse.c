@@ -76,6 +76,7 @@ int    put_struct(t_data *data, char **av)
     else
     {
        data->num_philosophers = ft_atol(av[1]);
+       data->as_finish = 0;
        data->tdie = ft_atol(av[2]);
        data->teat = ft_atol(av[3]);
        data->tsleep = ft_atol(av[4]);
