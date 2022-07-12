@@ -8,13 +8,17 @@ void	finish(t_data *data)
     //(void) i;
 	while (i < data->num_philosophers)
 	{
-
+		pthread_mutex_destroy(&data->miammiam[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&data->eating);
+	pthread_mutex_destroy(&data->death);
+	pthread_mutex_destroy(&data->finish);
 	free(data->philo);
 	i = 0;
 	free(data->tid);
 	free(data->miammiam);
+	//pthread_mutex_destroy(&data->miammiam);
 }
 
 uint64_t	get_time(void)
@@ -25,16 +29,15 @@ uint64_t	get_time(void)
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
 
-void * routine(void *arg) 
+void *routine(void *arg) 
 {
-
     t_philo *filo;
 
     filo = (t_philo *) arg;
-	pthread_mutex_lock(&filo->eating);
+	pthread_mutex_lock(&filo->data->eating);
 	filo->last_eat = get_time();
-	pthread_mutex_unlock(&filo->eating);
-	if (filo->id % 2 == 0)
+	pthread_mutex_unlock(&filo->data->eating);
+	if (filo->id % 2 != 0)
 	{
 		philo_think(filo);
 		usleep((filo->data->teat) * 0.25 * 1000);
@@ -49,10 +52,11 @@ void * routine(void *arg)
 		philo_think(filo);
 		if (filo->eat == filo->data->num_eat)
 		{
-			filo->is_finish = 1;
 			pthread_mutex_lock(&filo->data->finish);
+			filo->is_finish = 1;
 			filo->data->as_finish++;
 			pthread_mutex_unlock(&filo->data->finish);
+			pthread_mutex_lock(&filo->data->death);
 			break ;
 		}
 		philo_sleep(filo);
@@ -72,13 +76,13 @@ void    init_philo(t_data *data)
     data->miammiam = malloc(sizeof(pthread_mutex_t) * data->num_philosophers);
 	pthread_mutex_init(&data->finish, NULL);
 	pthread_mutex_init(&data->death, NULL);
-	pthread_mutex_init(&data->philo->eating, NULL);
+	pthread_mutex_init(&data->eating, NULL);
     while   (i < data->num_philosophers)
     {
         data->philo[i].num_eat = data->num_eat;
         memset(&data->philo[i], 0, sizeof(t_philo));
         memset(&data->tid[i], 0, sizeof(pthread_t));
-        memset(&data->miammiam[i], 0, sizeof(pthread_mutex_t));
+    //    memset(&data->miammiam[i], 0, sizeof(pthread_mutex_t));
         data->philo[i].data = data;
 		data->philo[i].is_finish = 0;
         data->philo[i].id = i + 1;
@@ -103,13 +107,16 @@ void	*routine2(void *arg)
 	{
 		pthread_mutex_lock(&data->finish);
 		if (data->as_finish == data->num_philosophers)
+		{
+			pthread_mutex_unlock(&data->finish);
 			break ;
+		}
 		pthread_mutex_unlock(&data->finish);
 		if (index == data->num_philosophers)
 			index = 0;
 		usleep(1000);
 		timestamp = get_time();
-		pthread_mutex_lock(&data->philo->eating);
+		pthread_mutex_lock(&data->eating);
 		pthread_mutex_lock(&data->finish);
 		if (!data->philo[index].is_finish && (int)(timestamp - data->philo[index].last_eat) > data->tdie)
 		{
@@ -119,8 +126,9 @@ void	*routine2(void *arg)
 			pthread_mutex_unlock(&data->death);
 			break ;
 		}
-		pthread_mutex_unlock(&data->philo->eating);
 		pthread_mutex_unlock(&data->finish);
+		pthread_mutex_unlock(&data->eating);
+
 		index++;
 	}
 	return (NULL);
@@ -139,11 +147,10 @@ void number_philo(t_data *data)
 		pthread_create(&data->tid[i], NULL, routine, (void*)&data->philo[i]);
         i++;
 	}
-	i = 0;
-	
+	i = 0;	
 	pthread_create(&rourou, NULL, routine2, data);
 	pthread_join(rourou, NULL);
-	while (i <  data->num_philosophers) 
+	while (i < data->num_philosophers) 
     {
 		pthread_join(data->tid[i], NULL);
 		i++;

@@ -18,9 +18,9 @@ void	philo_eat(t_philo *philo, uint64_t timestamp)
 {
 	print_tfk(philo, EATING, timestamp);
 	philo->eat++;
-	pthread_mutex_lock(&philo->eating);
+	pthread_mutex_lock(&philo->data->eating);
 	philo->last_eat = timestamp;
-	pthread_mutex_unlock(&philo->eating);
+	pthread_mutex_unlock(&philo->data->eating);
 	usleep(philo->data->teat * 1000);
 }
 

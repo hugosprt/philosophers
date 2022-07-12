@@ -8,8 +8,8 @@ int main( int ac, char **av)
     (void)(ac);
     if (put_struct(data, av))
     {
-            number_philo(data);
-        finish(data);
+        number_philo(data);
+       // finish(data);
     }
     free(data);
     return (0);

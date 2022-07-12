@@ -28,7 +28,6 @@ typedef struct s_philo
     int     eat;
     int     is_finish;
     int num_eat;
-    pthread_mutex_t eating;
     uint64_t		last_eat;
     struct s_data  *data;
 }   t_philo;
@@ -43,6 +42,7 @@ typedef struct s_data
     int tsleep;
     int num_eat;
     pthread_mutex_t finish;
+    pthread_mutex_t eating;
     int as_finish; 
     t_philo *philo;
     pthread_mutex_t	*miammiam;
