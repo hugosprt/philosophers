@@ -46,7 +46,18 @@ void *routine(void *arg)
 	while (filo->data->no_one_died)
 	{
 		pthread_mutex_unlock(&filo->data->death);
-		take_forks(filo, get_time());
+		//take_forks(filo, get_time());
+		pthread_mutex_lock(&filo->data->miammiam[filo->l_fork]);
+		print_tfk(filo, TOOK_FORK, get_time());
+		pthread_mutex_lock(&filo->data->death);
+		if (filo->l_fork == filo->r_fork)
+		{
+			pthread_mutex_unlock(&filo->data->miammiam[filo->l_fork]);
+			break ;
+		}
+		pthread_mutex_unlock(&filo->data->death);
+		pthread_mutex_lock(&filo->data->miammiam[filo->r_fork]);
+		print_tfk(filo, TOOK_FORK, get_time());
 		philo_eat(filo, get_time());
 		leave_forks(filo);
 		philo_think(filo);
@@ -153,6 +164,7 @@ void number_philo(t_data *data)
 	while (i < data->num_philosophers) 
     {
 		pthread_join(data->tid[i], NULL);
+
 		i++;
 	}
 }

@@ -4,6 +4,12 @@ void	take_forks(t_philo *philo, uint64_t timestamp)
 {
 	pthread_mutex_lock(&philo->data->miammiam[philo->l_fork]);
 	print_tfk(philo, TOOK_FORK, timestamp);
+	pthread_mutex_lock(&philo->data->death);
+	if (!philo->data->no_one_died)
+	{
+		
+	}
+	pthread_mutex_unlock(&philo->data->death);
 	pthread_mutex_lock(&philo->data->miammiam[philo->r_fork]);
 	print_tfk(philo, TOOK_FORK, timestamp);
 }
@@ -11,6 +17,7 @@ void	take_forks(t_philo *philo, uint64_t timestamp)
 void	leave_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(&philo->data->miammiam[philo->l_fork]);
+	
 	pthread_mutex_unlock(&philo->data->miammiam[philo->r_fork]);
 }
 
@@ -42,7 +49,7 @@ void	print_tfk(t_philo *philo, t_tfk tfk, uint64_t timestamp)
 	pthread_mutex_lock(&philo->data->death);
 	if (philo->data->no_one_died)
 	{
-		printf("%lu %d %s\n", timestamp, philo->id, states[tfk]);
+		printf("%llu %d %s\n", timestamp, philo->id, states[tfk]);
 		
 	}
 	pthread_mutex_unlock(&philo->data->death);

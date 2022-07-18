@@ -83,7 +83,7 @@ int    put_struct(t_data *data, char **av)
        if (av[5])
             data->num_eat = ft_atol(av[5]);
         else 
-            data->num_eat = -1;
+            data->num_eat = -100;
     }
     return (1);
 }
