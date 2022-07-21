@@ -49,7 +49,7 @@ void	print_tfk(t_philo *philo, t_tfk tfk, uint64_t timestamp)
 	pthread_mutex_lock(&philo->data->death);
 	if (philo->data->no_one_died)
 	{
-		printf("%llu %d %s\n", timestamp, philo->id, states[tfk]);
+		printf("%lu %d %s\n", timestamp, philo->id, states[tfk]);
 		
 	}
 	pthread_mutex_unlock(&philo->data->death);

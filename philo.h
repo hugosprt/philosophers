@@ -43,6 +43,7 @@ typedef struct s_data
     int num_eat;
     pthread_mutex_t finish;
     pthread_mutex_t eating;
+    pthread_mutex_t write;
     int as_finish; 
     t_philo *philo;
     pthread_mutex_t	*miammiam;

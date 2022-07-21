@@ -14,6 +14,7 @@ void	finish(t_data *data)
 	pthread_mutex_destroy(&data->eating);
 	pthread_mutex_destroy(&data->death);
 	pthread_mutex_destroy(&data->finish);
+	pthread_mutex_destroy(&data->write);
 	free(data->philo);
 	i = 0;
 	free(data->tid);
@@ -37,18 +38,20 @@ void *routine(void *arg)
 	pthread_mutex_lock(&filo->data->eating);
 	filo->last_eat = get_time();
 	pthread_mutex_unlock(&filo->data->eating);
-	if (filo->id % 2 != 0)
+	if (filo->id % 2 + 1 == 0)
 	{
 		philo_think(filo);
-		usleep((filo->data->teat) * 0.25 * 1000);
+		usleep((filo->data->teat) * 1.25 * 1000);
 	}
 	pthread_mutex_lock(&filo->data->death);
 	while (filo->data->no_one_died)
 	{
 		pthread_mutex_unlock(&filo->data->death);
-		//take_forks(filo, get_time());
 		pthread_mutex_lock(&filo->data->miammiam[filo->l_fork]);
+	//	printf("philo %d   fork : %d\n", filo->id, filo->l_fork);
+		pthread_mutex_lock(&filo->data->write);
 		print_tfk(filo, TOOK_FORK, get_time());
+		pthread_mutex_unlock(&filo->data->write);
 		pthread_mutex_lock(&filo->data->death);
 		if (filo->l_fork == filo->r_fork)
 		{
@@ -56,8 +59,11 @@ void *routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&filo->data->death);
+		// printf("philo %d   fork : %d\n", filo->id ,filo->r_fork);
 		pthread_mutex_lock(&filo->data->miammiam[filo->r_fork]);
+		pthread_mutex_lock(&filo->data->write);
 		print_tfk(filo, TOOK_FORK, get_time());
+		pthread_mutex_unlock(&filo->data->write);
 		philo_eat(filo, get_time());
 		leave_forks(filo);
 		philo_think(filo);
@@ -88,6 +94,7 @@ void    init_philo(t_data *data)
 	pthread_mutex_init(&data->finish, NULL);
 	pthread_mutex_init(&data->death, NULL);
 	pthread_mutex_init(&data->eating, NULL);
+	pthread_mutex_init(&data->write, NULL);
     while   (i < data->num_philosophers)
     {
         data->philo[i].num_eat = data->num_eat;
