@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:20:51 by hspriet           #+#    #+#             */
-/*   Updated: 2022/07/23 17:20:48 by hspriet          ###   ########.fr       */
+/*   Updated: 2022/07/23 18:54:37 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	philo_finish(t_philo *filo)
 	filo->is_finish = 1;
 	filo->data->as_finish++;
 	pthread_mutex_unlock(&filo->data->finish);
-	pthread_mutex_lock(&filo->data->death);
 }
 
 void	*routine(void *arg)
@@ -30,8 +29,11 @@ void	*routine(void *arg)
 	filo->last_eat = get_time();
 	pthread_mutex_unlock(&filo->data->eating);
 	pthread_mutex_lock(&filo->data->death);
-	while (filo->data->no_one_died)
+	pthread_mutex_lock(&filo->data->finish);
+	while (filo->data->no_one_died && filo->data->as_finish
+		!= filo->data->num_philosophers)
 	{
+		pthread_mutex_unlock(&filo->data->finish);
 		pthread_mutex_unlock(&filo->data->death);
 		if (take_forks(filo))
 			break ;
@@ -39,13 +41,12 @@ void	*routine(void *arg)
 		leave_forks(filo);
 		philo_sleep(filo);
 		if (filo->eat == filo->data->num_eat)
-		{
 			philo_finish(filo);
-			break ;
-		}
 		philo_think(filo);
 		pthread_mutex_lock(&filo->data->death);
+		pthread_mutex_lock(&filo->data->finish);
 	}
+	pthread_mutex_unlock(&filo->data->finish);
 	pthread_mutex_unlock(&filo->data->death);
 	return (NULL);
 }
