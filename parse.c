@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*	                                                                */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/23 14:37:52 by hspriet           #+#    #+#             */
+/*   Updated: 2022/07/23 14:38:18 by hspriet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void ft_error()
+void	ft_error(void)
 {
-    write(2, "error\n", 6);
+	write(2, "error\n", 6);
 }
 
 static	int	ft_isdigit2(char str)
@@ -40,51 +52,48 @@ long	int	ft_atol(const char *str)
 	return (nb * sign);
 }
 
-
-int parse(char **av)
+int	parse(char **av)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = 1;
-    j = 0;
-    while (av[i])
-    {
-        j = 0;
-        while (av[i][j])
-        {
-            if ((!ft_isdigit2(av[i][j]) && av[i][j]) || (j > 10))
-            {
-                ft_error();
-                return (0);
-            }
-            j++;
-        }
-        i++;
-    }
-    if (i == 5 || i == 6)
-        return (1);
-    ft_error();
-    return (0);
+	i = 1;
+	j = 0;
+	while (av[i])
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if ((!ft_isdigit2(av[i][j]) && av[i][j]) || (j > 10))
+			{
+				ft_error();
+				return (0);
+			}
+		j++;
+		}
+		i++;
+	}
+	if (i == 5 || i == 6)
+		return (1);
+	ft_error();
+	return (0);
 }
 
-
-int    put_struct(t_data *data, char **av)
+int	put_struct(t_data *data, char **av)
 {
-    if (!parse(av))
-        return (0);
-    else
-    {
-       data->num_philosophers = ft_atol(av[1]);
-       data->as_finish = 0;
-       data->tdie = ft_atol(av[2]);
-       data->teat = ft_atol(av[3]);
-       data->tsleep = ft_atol(av[4]);
-       if (av[5])
-            data->num_eat = ft_atol(av[5]);
-        else 
-            data->num_eat = -100;
-    }
-    return (1);
+	if (!parse(av))
+		return (0);
+	else
+	{
+		data->num_philosophers = ft_atol(av[1]);
+		data->as_finish = 0;
+		data->tdie = ft_atol(av[2]);
+		data->teat = ft_atol(av[3]);
+		data->tsleep = ft_atol(av[4]);
+		if (av[5])
+			data->num_eat = ft_atol(av[5]);
+		else
+		data->num_eat = -500;
+	}
+	return (1);
 }
-
