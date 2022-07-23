@@ -30,6 +30,24 @@ uint64_t	get_time(void)
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
 
+void	take_forks(t_philo *philo)
+{
+	//printf("take -> left = %d - right = %d - nb_phil = %d\n", philo->r_fork, philo->l_fork, philo->data->num_philosophers);
+	if (philo->id % 2 == 1)
+	{
+		pthread_mutex_lock(&philo->data->miammiam[philo->r_fork]);
+		print_tfk(philo, TOOK_FORK, get_time());
+		pthread_mutex_lock(&philo->data->miammiam[philo->l_fork]);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->data->miammiam[philo->l_fork]);
+		print_tfk(philo, TOOK_FORK, get_time());
+		pthread_mutex_lock(&philo->data->miammiam[philo->r_fork]);
+	}
+	print_tfk(philo, TOOK_FORK, get_time());	
+}
+
 void *routine(void *arg) 
 {
     t_philo *filo;
@@ -38,32 +56,17 @@ void *routine(void *arg)
 	pthread_mutex_lock(&filo->data->eating);
 	filo->last_eat = get_time();
 	pthread_mutex_unlock(&filo->data->eating);
-	if (filo->id % 2 + 1 == 0)
-	{
-		philo_think(filo);
-		usleep((filo->data->teat) * 1.25 * 1000);
-	}
+			// if (filo->id % 2 == 0)
+			// {
+			// 	philo_think(filo);
+			// 	usleep((filo->data->teat) * 0.25 * 1000);
+			// }
 	pthread_mutex_lock(&filo->data->death);
 	while (filo->data->no_one_died)
 	{
 		pthread_mutex_unlock(&filo->data->death);
-		pthread_mutex_lock(&filo->data->miammiam[filo->l_fork]);
-	//	printf("philo %d   fork : %d\n", filo->id, filo->l_fork);
-		pthread_mutex_lock(&filo->data->write);
-		print_tfk(filo, TOOK_FORK, get_time());
-		pthread_mutex_unlock(&filo->data->write);
-		pthread_mutex_lock(&filo->data->death);
-		if (filo->l_fork == filo->r_fork)
-		{
-			pthread_mutex_unlock(&filo->data->miammiam[filo->l_fork]);
-			break ;
-		}
-		pthread_mutex_unlock(&filo->data->death);
-		// printf("philo %d   fork : %d\n", filo->id ,filo->r_fork);
-		pthread_mutex_lock(&filo->data->miammiam[filo->r_fork]);
-		pthread_mutex_lock(&filo->data->write);
-		print_tfk(filo, TOOK_FORK, get_time());
-		pthread_mutex_unlock(&filo->data->write);
+		take_forks(filo);
+		
 		philo_eat(filo, get_time());
 		leave_forks(filo);
 		philo_think(filo);
@@ -80,7 +83,8 @@ void *routine(void *arg)
 		pthread_mutex_lock(&filo->data->death);
 	}
 	pthread_mutex_unlock(&filo->data->death);
-	pthread_exit(NULL);
+	return (NULL);
+	// pthread_exit(NULL);
 }
 
 void    init_philo(t_data *data)
@@ -132,6 +136,9 @@ void	*routine2(void *arg)
 		pthread_mutex_unlock(&data->finish);
 		if (index == data->num_philosophers)
 			index = 0;
+		
+		//printf("last eat = %lu\n", data->philo[index].last_eat);
+
 		usleep(1000);
 		timestamp = get_time();
 		pthread_mutex_lock(&data->eating);
@@ -142,6 +149,8 @@ void	*routine2(void *arg)
 			pthread_mutex_lock(&data->death);
 			data->no_one_died = 0;
 			pthread_mutex_unlock(&data->death);
+			pthread_mutex_unlock(&data->eating);
+			pthread_mutex_unlock(&data->finish);
 			break ;
 		}
 		pthread_mutex_unlock(&data->finish);
@@ -159,6 +168,7 @@ void number_philo(t_data *data)
 
     i = 0;
     init_philo(data);
+	data->starting_time = get_time();
 	while (i <  data->num_philosophers) 
     {
         data->philo[i].eat = 0;
@@ -171,7 +181,6 @@ void number_philo(t_data *data)
 	while (i < data->num_philosophers) 
     {
 		pthread_join(data->tid[i], NULL);
-
 		i++;
 	}
 }

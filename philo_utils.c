@@ -1,24 +1,32 @@
 #include "philo.h"
 
-void	take_forks(t_philo *philo, uint64_t timestamp)
-{
-	pthread_mutex_lock(&philo->data->miammiam[philo->l_fork]);
-	print_tfk(philo, TOOK_FORK, timestamp);
-	pthread_mutex_lock(&philo->data->death);
-	if (!philo->data->no_one_died)
-	{
+// void	take_forks(t_philo *philo, uint64_t timestamp)
+// {
+// 	pthread_mutex_lock(&philo->data->miammiam[philo->l_fork]);
+// 	print_tfk(philo, TOOK_FORK, timestamp);
+// 	pthread_mutex_lock(&philo->data->death);
+// 	if (!philo->data->no_one_died)
+// 	{
 		
-	}
-	pthread_mutex_unlock(&philo->data->death);
-	pthread_mutex_lock(&philo->data->miammiam[philo->r_fork]);
-	print_tfk(philo, TOOK_FORK, timestamp);
-}
+// 	}
+// 	pthread_mutex_unlock(&philo->data->death);
+// 	pthread_mutex_lock(&philo->data->miammiam[philo->r_fork]);
+// 	print_tfk(philo, TOOK_FORK, timestamp);
+// }
 
 void	leave_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(&philo->data->miammiam[philo->l_fork]);
-	
-	pthread_mutex_unlock(&philo->data->miammiam[philo->r_fork]);
+	// printf("drop -> left = %d - right = %d\n", philo->r_fork, philo->l_fork);
+	if (philo->id % 2 == 1)
+	{
+		pthread_mutex_unlock(&philo->data->miammiam[philo->l_fork]);
+		pthread_mutex_unlock(&philo->data->miammiam[philo->r_fork]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->data->miammiam[philo->r_fork]);
+		pthread_mutex_unlock(&philo->data->miammiam[philo->l_fork]);
+	}
 }
 
 void	philo_eat(t_philo *philo, uint64_t timestamp)
@@ -28,13 +36,13 @@ void	philo_eat(t_philo *philo, uint64_t timestamp)
 	pthread_mutex_lock(&philo->data->eating);
 	philo->last_eat = timestamp;
 	pthread_mutex_unlock(&philo->data->eating);
-	usleep(philo->data->teat * 1000);
+	ft_usleep(philo->data->teat * 1000);
 }
 
 void	philo_sleep(t_philo *philo)
 {
 	print_tfk(philo, SLEEPING, get_time());
-	usleep(philo->data->tsleep * 1000);
+	ft_usleep(philo->data->tsleep * 1000);
 }
 
 void	philo_think(t_philo *philo)
@@ -49,8 +57,16 @@ void	print_tfk(t_philo *philo, t_tfk tfk, uint64_t timestamp)
 	pthread_mutex_lock(&philo->data->death);
 	if (philo->data->no_one_died)
 	{
-		printf("%lu %d %s\n", timestamp, philo->id, states[tfk]);
+		printf("%lu %d %s\n", (timestamp - philo->data->starting_time), philo->id, states[tfk]);
 		
 	}
 	pthread_mutex_unlock(&philo->data->death);
+}
+
+void	ft_usleep(size_t	time)
+{
+	const size_t	instant_t = get_time();
+
+	while (get_time() - instant_t < time)
+		usleep(500);
 }

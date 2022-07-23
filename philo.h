@@ -41,6 +41,7 @@ typedef struct s_data
     int teat;
     int tsleep;
     int num_eat;
+    uint64_t        starting_time;
     pthread_mutex_t finish;
     pthread_mutex_t eating;
     pthread_mutex_t write;
@@ -57,8 +58,9 @@ void	print_tfk(t_philo *philo, t_tfk tfk, uint64_t timestamp);
 void	philo_think(t_philo *philo);
 void	philo_sleep(t_philo *philo);
 void	philo_eat(t_philo *philo, uint64_t timestamp);
-void	take_forks(t_philo *philo, uint64_t timestamp);
+void	take_forks(t_philo *philo);
 void	leave_forks(t_philo *philo);
+void	ft_usleep(size_t	time);
 uint64_t	get_time(void);
 
 #endif
