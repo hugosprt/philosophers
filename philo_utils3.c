@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 15:34:07 by hspriet           #+#    #+#             */
-/*   Updated: 2022/07/23 15:35:25 by hspriet          ###   ########.fr       */
+/*   Updated: 2022/07/23 16:59:10 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,11 @@ void	ft_zzz(t_data *data)
 {
 	pthread_mutex_unlock(&data->finish);
 	pthread_mutex_unlock(&data->eating);
+}
+
+int	normi(t_data *data, int index)
+{
+	if (index == data->num_philosophers)
+		return (0);
+	return (index);
 }

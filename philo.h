@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:37:27 by hspriet           #+#    #+#             */
-/*   Updated: 2022/07/23 15:34:40 by hspriet          ###   ########.fr       */
+/*   Updated: 2022/07/23 16:58:55 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ uint64_t		get_time(void);
 int				ft_25ligne(t_data *data, int index);
 void			ft_zzz(t_data *data);
 void			ft_zz(t_data *data);
+int				normi(t_data *data, int index);
 
 #endif

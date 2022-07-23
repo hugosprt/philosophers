@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:20:59 by hspriet           #+#    #+#             */
-/*   Updated: 2022/07/23 15:59:21 by hspriet          ###   ########.fr       */
+/*   Updated: 2022/07/23 17:26:57 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_usleep(size_t	time)
 
 uint64_t	get_time(void)
 {
-	static struct timeval	tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));

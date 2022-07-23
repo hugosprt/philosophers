@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:20:51 by hspriet           #+#    #+#             */
-/*   Updated: 2022/07/23 16:05:15 by hspriet          ###   ########.fr       */
+/*   Updated: 2022/07/23 17:20:48 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void	*routine2(void *arg)
 		if (data->as_finish == data->num_philosophers)
 			break ;
 		pthread_mutex_unlock(&data->finish);
-		if (index == data->num_philosophers)
-			index = 0;
+		index = normi(data, index);
 		ft_usleep(1);
 		timestamp = get_time();
 		ft_zz(data);
